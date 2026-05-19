@@ -1,6 +1,6 @@
 // ============================================================
 // OllamaAI - Premium AI SaaS Landing Page
-// Ollama API endpoint: https://levy-citizen-distant-turn.trycloudflare.com/api/generate
+// Ollama API endpoint: https://establishment-withdrawal-farmers-gmc.trycloudflare.com/api/generate
 // To change model: update OLLAMA_MODEL constant below
 // ============================================================
 
@@ -10,7 +10,7 @@ const { useState, useEffect, useRef, useCallback } = React;
 // UPDATE THIS to change the Ollama model used in the chatbot
 const OLLAMA_MODEL = "mistral-nemo:12b";
 // Ollama API base URL (running locally)
-const OLLAMA_API = "https://levy-citizen-distant-turn.trycloudflare.com/api/generate";
+const OLLAMA_API = "https://establishment-withdrawal-farmers-gmc.trycloudflare.com/api/generate";
 // ─────────────────────────────────────────────────────────────
 
 // Marked config for markdown
@@ -322,7 +322,7 @@ const Footer = () => (
 
 // ── CHAT WIDGET ──────────────────────────────────────────────
 // This component handles the floating chatbot connected to Ollama.
-// API: POST https://levy-citizen-distant-turn.trycloudflare.com/api/generate with streaming enabled.
+// API: POST https://establishment-withdrawal-farmers-gmc.trycloudflare.com/api/generate with streaming enabled.
 // To change the model, update OLLAMA_MODEL at the top of this file.
 
 const SYSTEM_MESSAGES = [
@@ -354,7 +354,7 @@ const ChatWidget = ({ open, onClose }) => {
   // Check if Ollama is reachable when widget opens
   useEffect(() => {
     if (!open) return;
-    fetch('https://levy-citizen-distant-turn.trycloudflare.com/api/tags', { signal: AbortSignal.timeout(3000) })
+    fetch('https://establishment-withdrawal-farmers-gmc.trycloudflare.com/api/tags', { signal: AbortSignal.timeout(3000) })
       .then(r => setModelOnline(r.ok))
       .catch(() => setModelOnline(false));
   }, [open]);
