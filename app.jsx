@@ -1,6 +1,6 @@
 // ============================================================
 // OllamaAI - Premium AI SaaS Landing Page
-// Ollama API endpoint: https://establishment-withdrawal-farmers-gmc.trycloudflare.com/api/generate
+// Ollama API endpoint: http://localhost:11434/api/generate
 // To change model: update OLLAMA_MODEL constant below
 // ============================================================
 
@@ -10,8 +10,7 @@ const { useState, useEffect, useRef, useCallback } = React;
 // UPDATE THIS to change the Ollama model used in the chatbot
 const OLLAMA_MODEL = "mistral-nemo:12b";
 // Ollama API base URL (running locally)
-const OLLAMA_BASE = "https://untaken-shindig-chain.ngrok-free.dev";
-const OLLAMA_API = `${OLLAMA_BASE}/api/generate`;
+const OLLAMA_API = "http://localhost:11434/api/generate";
 // ─────────────────────────────────────────────────────────────
 
 // Marked config for markdown
@@ -207,7 +206,7 @@ const DemoSection = () => (
         <div className="demo-dots">
           <div className="demo-dot" /><div className="demo-dot" /><div className="demo-dot" />
         </div>
-        <span className="demo-title">OllamaAI Chat · qwen2.5:14b · trycloudflare.com</span>
+        <span className="demo-title">OllamaAI Chat · mistral-nemo:12b · localhost</span>
       </div>
       <div className="demo-body">
         <div className="demo-messages">
@@ -323,7 +322,7 @@ const Footer = () => (
 
 // ── CHAT WIDGET ──────────────────────────────────────────────
 // This component handles the floating chatbot connected to Ollama.
-// API: POST https://establishment-withdrawal-farmers-gmc.trycloudflare.com/api/generate with streaming enabled.
+// API: POST http://localhost:11434/api/generate with streaming enabled.
 // To change the model, update OLLAMA_MODEL at the top of this file.
 
 const SYSTEM_MESSAGES = [
@@ -355,13 +354,7 @@ const ChatWidget = ({ open, onClose }) => {
   // Check if Ollama is reachable when widget opens
   useEffect(() => {
     if (!open) return;
-    fetch(`${OLLAMA_BASE}/api/tags`, {
-      signal: AbortSignal.timeout(3000),
-      headers: {
-        "ngrok-skip-browser-warning": "true",
-        "Content-Type": "application/json"
-      }
-    })
+    fetch('http://localhost:11434/api/tags', { signal: AbortSignal.timeout(3000) })
       .then(r => setModelOnline(r.ok))
       .catch(() => setModelOnline(false));
   }, [open]);
@@ -442,7 +435,7 @@ const ChatWidget = ({ open, onClose }) => {
     } catch (err) {
       if (err.name === 'AbortError') return;
       const errMsg = err.message.includes('Failed to fetch')
-        ? '⚠️ Cannot reach the cloud Ollama API.\n\nMake sure:\n1. The Cloudflare tunnel is active\n2. Model is available (`ollama pull ' + OLLAMA_MODEL + '`)'
+        ? '⚠️ Cannot reach the local Ollama API.\n\nMake sure:\n1. Ollama is running (`ollama serve`)\n2. Model is available (`ollama pull ' + OLLAMA_MODEL + '`)'
         : `⚠️ Error: ${err.message}`;
       setMessages(prev => {
         const updated = [...prev];
