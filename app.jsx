@@ -1,6 +1,6 @@
 // ============================================================
 // OllamaAI - Premium AI SaaS Landing Page
-// Ollama API endpoint: http://localhost:11434/api/generate
+// Ollama API endpoint: https://levy-citizen-distant-turn.trycloudflare.com/api/generate
 // To change model: update OLLAMA_MODEL constant below
 // ============================================================
 
@@ -10,7 +10,7 @@ const { useState, useEffect, useRef, useCallback } = React;
 // UPDATE THIS to change the Ollama model used in the chatbot
 const OLLAMA_MODEL = "mistral-nemo:12b";
 // Ollama API base URL (running locally)
-const OLLAMA_API = "http://localhost:11434/api/generate";
+const OLLAMA_API = "https://levy-citizen-distant-turn.trycloudflare.com/api/generate";
 // ─────────────────────────────────────────────────────────────
 
 // Marked config for markdown
@@ -206,7 +206,7 @@ const DemoSection = () => (
         <div className="demo-dots">
           <div className="demo-dot" /><div className="demo-dot" /><div className="demo-dot" />
         </div>
-        <span className="demo-title">OllamaAI Chat · qwen2.5:14b · localhost:11434</span>
+        <span className="demo-title">OllamaAI Chat · qwen2.5:14b · trycloudflare.com</span>
       </div>
       <div className="demo-body">
         <div className="demo-messages">
@@ -271,7 +271,7 @@ const HowSection = () => (
       {[
         { n: '1', title: 'Install Ollama', desc: 'Download Ollama from ollama.ai and install it on your machine. Supports Mac, Linux, and Windows.' },
         { n: '2', title: 'Pull a Model', desc: 'Run `ollama pull qwen2.5:14b` in your terminal. Ollama downloads and manages models automatically.' },
-        { n: '3', title: 'Start Chatting', desc: 'Open this page and click the chat button. Your browser connects directly to localhost:11434.' },
+        { n: '3', title: 'Start Chatting', desc: 'Open this page and click the chat button. Your browser connects directly to the cloud API.' },
       ].map((s, i) => (
         <div className="glass-card step-card" key={i}>
           <div className="step-num">{s.n}</div>
@@ -322,7 +322,7 @@ const Footer = () => (
 
 // ── CHAT WIDGET ──────────────────────────────────────────────
 // This component handles the floating chatbot connected to Ollama.
-// API: POST http://localhost:11434/api/generate with streaming enabled.
+// API: POST https://levy-citizen-distant-turn.trycloudflare.com/api/generate with streaming enabled.
 // To change the model, update OLLAMA_MODEL at the top of this file.
 
 const SYSTEM_MESSAGES = [
@@ -354,7 +354,7 @@ const ChatWidget = ({ open, onClose }) => {
   // Check if Ollama is reachable when widget opens
   useEffect(() => {
     if (!open) return;
-    fetch('http://localhost:11434/api/tags', { signal: AbortSignal.timeout(3000) })
+    fetch('https://levy-citizen-distant-turn.trycloudflare.com/api/tags', { signal: AbortSignal.timeout(3000) })
       .then(r => setModelOnline(r.ok))
       .catch(() => setModelOnline(false));
   }, [open]);
@@ -435,7 +435,7 @@ const ChatWidget = ({ open, onClose }) => {
     } catch (err) {
       if (err.name === 'AbortError') return;
       const errMsg = err.message.includes('Failed to fetch')
-        ? '⚠️ Cannot reach Ollama at localhost:11434.\n\nMake sure:\n1. Ollama is running (`ollama serve`)\n2. Model is pulled (`ollama pull ' + OLLAMA_MODEL + '`)\n3. CORS is allowed (set `OLLAMA_ORIGINS=*`)'
+        ? '⚠️ Cannot reach the cloud Ollama API.\n\nMake sure:\n1. The Cloudflare tunnel is active\n2. Model is available (`ollama pull ' + OLLAMA_MODEL + '`)'
         : `⚠️ Error: ${err.message}`;
       setMessages(prev => {
         const updated = [...prev];
