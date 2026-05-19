@@ -10,7 +10,8 @@ const { useState, useEffect, useRef, useCallback } = React;
 // UPDATE THIS to change the Ollama model used in the chatbot
 const OLLAMA_MODEL = "mistral-nemo:12b";
 // Ollama API base URL (running locally)
-const OLLAMA_API = "https://establishment-withdrawal-farmers-gmc.trycloudflare.com/api/generate";
+const OLLAMA_BASE = "https://untaken-shindig-chain.ngrok-free.dev";
+const OLLAMA_API = `${OLLAMA_BASE}/api/generate`;
 // ─────────────────────────────────────────────────────────────
 
 // Marked config for markdown
@@ -354,7 +355,13 @@ const ChatWidget = ({ open, onClose }) => {
   // Check if Ollama is reachable when widget opens
   useEffect(() => {
     if (!open) return;
-    fetch('https://establishment-withdrawal-farmers-gmc.trycloudflare.com/api/tags', { signal: AbortSignal.timeout(3000) })
+    fetch(`${OLLAMA_BASE}/api/tags`, {
+      signal: AbortSignal.timeout(3000),
+      headers: {
+        "ngrok-skip-browser-warning": "true",
+        "Content-Type": "application/json"
+      }
+    })
       .then(r => setModelOnline(r.ok))
       .catch(() => setModelOnline(false));
   }, [open]);
